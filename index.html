@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FloodGuard AI – প্রোটোটাইপ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#EEF4F8;--card:#fff;--ink:#14212E;--mut:#4A5B6C;--line:#C9D9E6;--navy:#0B1F3A;--blue:#17608F;--teal:#1F7F7D;--lo:#1F7F7D;--mo:#8A6D00;--hi:#B85A0B;--cr:#B02A1E;--warnbg:#FDECEA;--box:#E6F0F7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0C1622;--card:#13233A;--ink:#E6EEF6;--mut:#9FB3C6;--line:#27405C;--navy:#071426;--blue:#6DB6E6;--teal:#5CCBC8;--lo:#5CCBC8;--mo:#E3C04D;--hi:#F0953F;--cr:#FF8A7A;--warnbg:#3A1C1A;--box:#1B3250}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0C1622;--card:#13233A;--ink:#E6EEF6;--mut:#9FB3C6;--line:#27405C;--navy:#071426;--blue:#6DB6E6;--teal:#5CCBC8;--lo:#5CCBC8;--mo:#E3C04D;--hi:#F0953F;--cr:#FF8A7A;--warnbg:#3A1C1A;--box:#1B3250}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans Bengali',system-ui,sans-serif;line-height:1.55;font-size:15px}
+header{background:#0B1F3A;color:#fff;padding:18px 16px 12px}
+header h1{margin:0;font-size:24px;letter-spacing:.5px}
+header p{margin:2px 0 0;font-size:13px;color:#9FE0DD}
+.banner{background:var(--warnbg);color:var(--cr);font-size:12.5px;padding:7px 16px;border-bottom:1px solid var(--line);font-weight:600}
+nav{display:flex;gap:4px;overflow-x:auto;padding:8px 10px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+nav button{flex:none;border:1px solid var(--line);background:var(--box);color:var(--ink);padding:9px 13px;border-radius:20px;font:inherit;font-size:13.5px;min-height:44px;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:700}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) nav button[aria-selected="true"]{color:#06121F}}
+main{max-width:760px;margin:0 auto;padding:12px}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px}
+h2{margin:0 0 8px;font-size:17px}h3{margin:12px 0 4px;font-size:14.5px;color:var(--blue)}
+label{display:block;font-size:13.5px;font-weight:600;margin:10px 0 3px}
+input[type=range]{width:100%}
+input[type=number],input[type=text],select{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;min-height:44px}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:8px;padding:11px 16px;font:inherit;font-weight:700;min-height:44px;cursor:pointer}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#06121F}}
+.val{float:right;font-weight:700;color:var(--blue)}
+.res{border-radius:10px;padding:12px;color:#fff;margin-top:10px;font-weight:700;font-size:18px}
+.lo{background:#1F7F7D}.mo{background:#7A5F00}.hi{background:#A64D08}.cr{background:#A12418}
+.bar{height:9px;background:var(--box);border-radius:5px;overflow:hidden;margin:2px 0 7px}.bar i{display:block;height:100%;background:var(--blue)}
+.note{font-size:12.5px;color:var(--mut)}
+.warn{background:var(--warnbg);border-left:4px solid var(--cr);padding:8px 10px;border-radius:4px;font-size:13.5px;font-weight:600;margin:10px 0}
+ul.ck{list-style:none;padding:0;margin:0}ul.ck li{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+ul.ck input{width:20px;height:20px;flex:none;margin-top:2px}
+.chat{max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:7px;padding:4px 0}
+.m{padding:8px 11px;border-radius:12px;max-width:88%;font-size:14px;white-space:pre-wrap}
+.u{align-self:flex-end;background:var(--blue);color:#fff}.b{align-self:flex-start;background:var(--box)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .u{color:#06121F}}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.chips button{border:1px solid var(--line);background:var(--box);color:var(--ink);border-radius:16px;padding:7px 11px;font:inherit;font-size:13px;min-height:40px;cursor:pointer}
+.row{display:flex;gap:8px}.row input{flex:1}
+.check label{font-weight:400;display:flex;gap:8px;align-items:center;margin:4px 0}.check input{width:20px;height:20px}
+</style>
+</head>
+<body>
+<header><h1>FloodGuard AI</h1><p>পূর্বাভাস · প্রস্তুতি · সাড়া · খাদ্য-পানি · পুনরুদ্ধার (প্রোটোটাইপ)</p></header>
+<div class="banner">ডেমো প্রোটোটাইপ — সরকারি সতর্কবার্তা নয়, লাইভ ডেটা নেই। সবসময় BWDB/BMD/FFWC ও স্থানীয় প্রশাসনের নির্দেশ অনুসরণ করুন।</div>
+<nav role="tablist" id="tabs"></nav>
+<main>
+
+<section id="s0" class="on">
+<div class="card"><h2>০১ · ঝুঁকি অনুমান (Predict)</h2>
+<p class="note">নিজে ডেটা দিন; স্বচ্ছ নিয়মভিত্তিক বেসলাইন মডেল (প্রশিক্ষিত বা যাচাইকৃত নয়) আনুমানিক ঝুঁকিস্তর দেখাবে।</p>
+<label>গত ২৪ ঘণ্টার বৃষ্টি <span class="val" id="v1"></span></label><input type="range" id="rain" min="0" max="300" value="60">
+<label>আগামী ৩ দিনের পূর্বাভাসিত বৃষ্টি <span class="val" id="v2"></span></label><input type="range" id="fc" min="0" max="500" value="100">
+<label>নদীর পানির স্তর (বিপদসীমার তুলনায়) <span class="val" id="v3"></span></label><input type="range" id="lvl" min="-200" max="150" value="-50">
+<label>এলাকার ধরন</label><select id="area"><option value="0">উঁচু / তুলনামূলক নিরাপদ</option><option value="1" selected>সাধারণ সমতল</option><option value="2">নিম্নাঞ্চল / নদীর কাছে</option></select>
+<div class="check"><label><input type="checkbox" id="hist"> আগে এ এলাকায় বন্যা হয়েছে</label></div>
+<button class="btn" id="calc">ঝুঁকি দেখুন</button>
+<div id="out"></div></div></section>
+
+<section id="s1"><div class="card"><h2>০২ · প্রস্তুতি পরিকল্পনা (Prepare)</h2>
+<p class="note">ঝুঁকিস্তর: <b id="lv">এখনো হিসাব হয়নি (০১ ট্যাবে দেখুন)</b></p>
+<label>পরিবারের সদস্য সংখ্যা</label><input type="number" id="hh" min="1" value="4">
+<div class="check"><label><input type="checkbox" class="vul" value="child"> শিশু আছে</label><label><input type="checkbox" class="vul" value="old"> বয়স্ক সদস্য আছেন</label><label><input type="checkbox" class="vul" value="dis"> প্রতিবন্ধী সদস্য আছেন</label><label><input type="checkbox" class="vul" value="med"> নিয়মিত ওষুধ লাগে</label></div>
+<button class="btn" id="gp">চেকলিস্ট তৈরি করুন</button><ul class="ck" id="pl"></ul></div></section>
+
+<section id="s2"><div class="card"><h2>০৩ · বাংলা জরুরি সহায়ক (Respond)</h2>
+<div class="chat" id="chat" aria-live="polite"><div class="m b">আমি সাধারণ বন্যা-নিরাপত্তা নির্দেশনা দিতে পারি। আশ্রয়কেন্দ্র, রাস্তা বা সরকারি নম্বর আমি বানিয়ে বলি না — সেগুলো স্থানীয় প্রশাসন থেকে যাচাই করুন।</div></div>
+<div class="chips" id="chips"></div>
+<div class="row"><input type="text" id="q" placeholder="বাংলায় প্রশ্ন লিখুন…" aria-label="প্রশ্ন"><button class="btn" id="ask">পাঠান</button></div></div></section>
+
+<section id="s3"><div class="card"><h2>০৪ · খাদ্য ও পানি পরিকল্পনা (Sustain)</h2>
+<label>সদস্য সংখ্যা</label><input type="number" id="n" min="1" value="4">
+<label>কত দিনের জন্য প্রস্তুতি</label><input type="number" id="d" min="1" value="3">
+<label>জনপ্রতি দৈনিক পানি (লিটার) — পরিকল্পনার ধারণা, স্থানীয় নির্দেশনা অনুযায়ী বদলান</label><input type="number" id="lpd" min="1" step="0.5" value="3">
+<label>বর্তমান মজুত পানি (লিটার)</label><input type="number" id="have" min="0" value="0">
+<div class="check"><label><input type="checkbox" id="inf"> শিশু (ফর্মুলা/বিশেষ খাবার)</label><label><input type="checkbox" id="eld"> বয়স্ক সদস্য</label><label><input type="checkbox" id="diet"> বিশেষ খাদ্যাভ্যাস/অ্যালার্জি</label></div>
+<button class="btn" id="gs">তালিকা তৈরি করুন</button><ul class="ck" id="sl"></ul>
+<div class="warn">বন্যার পানির সংস্পর্শে আসা খাবার কখনো খাবেন না। অনিরাপদ খাবার সরকারি খাদ্য-নিরাপত্তা নির্দেশনা অনুযায়ী ফেলে দিন।</div>
+<p class="note">ফুটানো/শোধন পদ্ধতি স্থানীয় নির্দেশনা দেখুন; এতে রাসায়নিক দূষণ দূর নাও হতে পারে। এটি ক্যালোরি-লক্ষ্য বা চিকিৎসাভিত্তিক ডায়েট নয়।</p></div></section>
+
+<section id="s4"><div class="card"><h2>০৫ · পুনরুদ্ধার (Recover)</h2>
+<p class="note">পানি নামার পর ধাপে ধাপে — টিক দিন।</p>
+<ul class="ck" id="rl"></ul>
+<div class="warn">এটি সাধারণ সহায়তা মাত্র; কাঠামোগত পরিদর্শন, চিকিৎসা-নির্ণয় বা ত্রাণের নিশ্চয়তা নয়।</div></div></section>
+
+<p class="note" style="text-align:center">FloodGuard AI · BCS ICT Fest 2026 প্রোটোটাইপ · মূল্যায়ন ফলাফল পরীক্ষার পর যোগ হবে</p>
+</main>
+<script>
+(function(){
+var T=['০১ ঝুঁকি','০২ প্রস্তুতি','০৩ সহায়ক','০৪ খাদ্য-পানি','০৫ পুনরুদ্ধার'];
+var nav=document.getElementById('tabs'),secs=[0,1,2,3,4].map(function(i){return document.getElementById('s'+i)});
+T.forEach(function(t,i){var b=document.createElement('button');b.textContent=t;b.setAttribute('role','tab');b.setAttribute('aria-selected',i==0);b.onclick=function(){show(i)};nav.appendChild(b)});
+function show(i){secs.forEach(function(s,j){s.classList.toggle('on',i==j);nav.children[j].setAttribute('aria-selected',i==j)});window.scrollTo(0,0)}
+function $(id){return document.getElementById(id)}
+var level=null;
+function lab(){$('v1').textContent=$('rain').value+' মি.মি.';$('v2').textContent=$('fc').value+' মি.মি.';var l=$('lvl').value/100;$('v3').textContent=(l>0?'+':'')+l.toFixed(2)+' মি.'}
+['rain','fc','lvl'].forEach(function(k){$(k).oninput=lab});lab();
+var N={0:['কম','lo','Low'],1:['মাঝারি','mo','Moderate'],2:['উচ্চ','hi','High'],3:['সংকটজনক','cr','Critical']};
+$('calc').onclick=function(){
+ var r=+$('rain').value,f=+$('fc').value,l=$('lvl').value/100,a=+$('area').value,h=$('hist').checked?1:0;
+ var cr=Math.min(r/150,1)*30,cf=Math.min(f/300,1)*20,cl=Math.max(0,Math.min((l+1.5)/2.5,1))*35,ca=a*5,ch=h*5;
+ var s=Math.round(cr+cf+cl+ca+ch),k=s<25?0:s<45?1:s<65?2:3;level=k;
+ var parts=[['বৃষ্টি (২৪ঘ)',cr,30],['পূর্বাভাসিত বৃষ্টি',cf,20],['নদীর স্তর',cl,35],['এলাকা',ca,10],['ইতিহাস',ch,5]];
+ var bars=parts.map(function(p){return '<div class="note">'+p[0]+'</div><div class="bar"><i style="width:'+Math.round(p[1]/p[2]*100)+'%"></i></div>'}).join('');
+ var adv=['স্বাভাবিক সতর্কতা বজায় রাখুন ও সরকারি সতর্কবার্তা দেখুন।','প্রস্তুতি চেকলিস্ট দেখুন এবং সতর্কবার্তা নিয়মিত পড়ুন।','জরুরি প্রস্তুতি নিন; আশ্রয়কেন্দ্রের তথ্য যাচাই করুন; সরকারি নির্দেশ মানুন।','অবিলম্বে সরকারি নির্দেশ অনুসরণ করুন; প্রয়োজনে নিরাপদ স্থানে সরে যান।'][k];
+ $('out').innerHTML='<div class="res '+N[k][1]+'">ঝুঁকিস্তর: '+N[k][0]+' ('+N[k][2]+') · স্কোর '+s+'/১০০</div><p>'+adv+'</p><h3>কী কারণে এই স্তর</h3>'+bars+'<div class="warn">ইলাস্ট্রেটিভ উদাহরণ — লাইভ পূর্বাভাস নয়। সঠিক সময়, গভীরতা বা স্থান এই মডেল বলতে পারে না। ফলাফল ব্যবহারকারীর দেওয়া তথ্য ও অনিশ্চয়তার ওপর নির্ভরশীল।</div>';
+ $('lv').textContent=N[k][0]+' ('+N[k][2]+')'};
+function list(el,items){el.innerHTML=items.map(function(t,i){return '<li><input type="checkbox" id="'+el.id+i+'"><label for="'+el.id+i+'" style="font-weight:400;margin:0">'+t+'</label></li>'}).join('')}
+$('gp').onclick=function(){
+ var n=+$('hh').value||1,v=[].slice.call(document.querySelectorAll('.vul:checked')).map(function(x){return x.value});
+ var it=['পরিবারের জরুরি পরিকল্পনা পর্যালোচনা করুন ও সবাইকে জানান।','যাচাইকৃত আশ্রয়কেন্দ্র ও নিরাপদ চলাচলের পথ স্থানীয় প্রশাসন থেকে জেনে রাখুন।','নিরাপদ পানীয় জল ঢাকনাযুক্ত পরিষ্কার পাত্রে রাখুন; পানি শোধনের উপকরণ প্রস্তুত রাখুন।','শুকনো, সিলকরা শুকনো খাবার রাখুন ('+n+' জনের জন্য)।','টর্চ, চার্জড পাওয়ার ব্যাংক, প্রাথমিক চিকিৎসা সামগ্রী ও জরুরি যোগাযোগের তালিকা রাখুন।','গুরুত্বপূর্ণ কাগজপত্র ও ওষুধ ওয়াটারপ্রুফ ব্যাগে রাখুন।','সরকারি আবহাওয়া ও বন্যা সতর্কবার্তা নিয়মিত দেখুন।','স্থানীয় কর্তৃপক্ষের সরে যাওয়ার নির্দেশ মেনে চলুন।'];
+ if(v.indexOf('child')>-1)it.push('শিশুর জন্য প্রয়োজনীয় খাবার, পোশাক ও সঙ্গী নির্ধারণ করুন।');
+ if(v.indexOf('old')>-1)it.push('বয়স্ক সদস্যের চলাচল ও সহায়তার ব্যবস্থা আগে থেকে ঠিক করুন।');
+ if(v.indexOf('dis')>-1)it.push('প্রতিবন্ধী সদস্যের জন্য সহায়ক উপকরণ ও সরে যাওয়ার সহায়তার পরিকল্পনা করুন।');
+ if(v.indexOf('med')>-1)it.push('নিয়মিত ওষুধের অতিরিক্ত মজুত ও প্রেসক্রিপশনের কপি রাখুন।');
+ if(level!==null&&level>=2)it.unshift('ঝুঁকি '+N[level][0]+': উপরের কাজগুলো এখনই অগ্রাধিকার দিন।');
+ list($('pl'),it)};
+$('gs').onclick=function(){
+ var n=+$('n').value||1,d=+$('d').value||1,l=+$('lpd').value||1,h=+$('have').value||0,need=n*d*l,gap=Math.max(0,need-h);
+ var it=['পানি: প্রয়োজন আনুমানিক '+need+' লিটার; মজুত '+h+' লিটার; আরও দরকার ~'+gap+' লিটার (সিলকরা নিরাপদ পানি অগ্রাধিকার)।','সিলকরা বিস্কুট/ক্র্যাকার — '+d+' দিনের জন্য '+n+' জনের মতো।','সংরক্ষিত চিঁড়া ও মুড়ি (শুকনো, সিলকরা পাত্রে)।','অক্ষত বাণিজ্যিক সিলকরা ক্যান/প্যাকেটজাত রেডি-টু-ইট খাবার।','স্থানীয়ভাবে উপযুক্ত অন্যান্য দীর্ঘস্থায়ী খাবার।','পানি শোধনের উপকরণ (স্থানীয় নির্দেশনা অনুযায়ী)।'];
+ if($('inf').checked)it.push('শিশুর জন্য ফর্মুলা/বিশেষ খাবার ও নিরাপদ পানি আলাদা রাখুন — চিকিৎসকের পরামর্শ নিন।');
+ if($('eld').checked)it.push('বয়স্কদের জন্য নরম/সহজপাচ্য খাবার ও নিয়মিত ওষুধ।');
+ if($('diet').checked)it.push('বিশেষ খাদ্যাভ্যাস/অ্যালার্জির উপযোগী খাবার আলাদা করে রাখুন।');
+ list($('sl'),it)};
+list($('rl'),['পানি নামলেও ক্ষতিগ্রস্ত ভবনে প্রবেশ করবেন না, নিরাপত্তা যাচাইয়ের আগে।','ক্ষতিগ্রস্ত বৈদ্যুতিক সরঞ্জাম ও সম্ভাব্য লাইভ বিদ্যুৎ থেকে দূরে থাকুন।','কূপ বা পানির উৎস ব্যবহারের আগে সরকারি নির্দেশনা দেখুন।','বন্যার পানিতে ভেজা খাবার ও নষ্ট মজুত চিহ্নিত করুন।','ঘর, ফসল, রাস্তা ও সুবিধার ক্ষতি নথিভুক্ত/রিপোর্ট করুন।','যাচাইকৃত স্বাস্থ্যসেবা, ত্রাণকেন্দ্র ও সহায়তা কর্মসূচির তথ্য খুঁজুন।','অপূরণীয় চাহিদা অগ্রাধিকার দিয়ে কমিউনিটি/প্রশাসনকে জানান।']);
+var K=[
+[['ঢুকছে','ঢুকে','পানি ঢু'],'এখন করুন:\n• সরকারি/স্থানীয় নির্দেশনা ও সরে যাওয়ার ঘোষণা অনুসরণ করুন।\n• প্রয়োজনে বিদ্যুতের মেইন সুইচ বন্ধ করুন (ভেজা হাতে নয়) এবং ডকুমেন্ট ও ওষুধ উঁচুতে রাখুন।\n• বন্যার পানিতে হাঁটবেন না বা গাড়ি চালাবেন না।\n• জিনিসপত্র বাঁচাতে পানিতে নামবেন না।\n• বিপদে স্থানীয় জরুরি সেবার নম্বরে যোগাযোগ করুন (নম্বর যাচাই করে নিন; আমি বানিয়ে বলি না)।'],
+[['পানীয়','জল','পানি খ','বিশুদ্ধ'],'নিরাপদ পানি:\n• সম্ভব হলে সিলকরা নিরাপদ পানি ব্যবহার করুন।\n• ফুটানো/শোধনের ক্ষেত্রে স্থানীয় সরকারি নির্দেশনা মানুন।\n• পরিষ্কার, ঢাকনাযুক্ত পাত্রে সংরক্ষণ করুন।\n• বন্যার পানি বা অযাচাইকৃত উৎস নিরাপদ ধরে নেবেন না। শোধনে রাসায়নিক দূষণ দূর নাও হতে পারে।'],
+[['খাবার','খাদ্য','খাওয়'],'খাবার:\n• নিরাপদ: সিলকরা বিস্কুট/ক্র্যাকার, ঠিকমতো রাখা চিঁড়া-মুড়ি, অক্ষত সিলকরা ক্যান বা প্যাকেটজাত খাবার।\n• বন্যার পানির সংস্পর্শে আসা খাবার খাবেন না; সরকারি নির্দেশনা অনুযায়ী ফেলে দিন।\n• সন্দেহ হলে ফেলে দিন।'],
+[['আশ্রয়','শেল্টার','কেন্দ্র'],'আশ্রয়কেন্দ্র:\nযাচাইকৃত আশ্রয়কেন্দ্রের তথ্য এই প্রোটোটাইপে নেই — তথ্য অনুপলব্ধ। ইউনিয়ন পরিষদ/উপজেলা/জেলা প্রশাসন ও দুর্যোগ ব্যবস্থাপনা কর্তৃপক্ষের ঘোষণা দেখুন। ঠিকানা বা রাস্তার অবস্থা আমি অনুমান করব না।'],
+[['বিদ্যুৎ','শক','তার'],'বিদ্যুৎ: ভেজা বা ক্ষতিগ্রস্ত বৈদ্যুতিক সরঞ্জাম ও ঝুলে থাকা তার থেকে দূরে থাকুন। নিরাপদ হলে মেইন সুইচ বন্ধ করুন এবং দক্ষ ব্যক্তিকে দিয়ে পরীক্ষা করান।'],
+[['অসুস্থ','ডায়রিয়া','জ্বর','চিকিৎসা','আহত'],'স্বাস্থ্য: গুরুতর অসুস্থতা বা আঘাতে জরুরি স্বাস্থ্যসেবা/নিকটস্থ যাচাইকৃত স্বাস্থ্যকেন্দ্রে যোগাযোগ করুন। আমি রোগ-নির্ণয় করতে পারি না।'],
+[['ফিরব','ফেরা','নামলে','পরে','ক্ষতি'],'পানি নামার পর: ০৫ ট্যাবের ধাপগুলো দেখুন — ক্ষতিগ্রস্ত ভবনে নিরাপত্তা যাচাই ছাড়া ঢুকবেন না, বিদ্যুৎ ও পানির উৎস সম্পর্কে সরকারি নির্দেশনা দেখুন।'],
+[['হাঁটব','নৌকা','রাস্তা','গাড়ি','পার'],'বন্যার পানিতে হাঁটা বা গাড়ি চালানো বিপজ্জনক। রাস্তার লাইভ অবস্থা আমার কাছে নেই — স্থানীয় কর্তৃপক্ষের নির্দেশ অনুসরণ করুন।']];
+var Q=['আমার এলাকায় পানি ঢুকছে, এখন কী করব?','নিরাপদ পানীয় জল কীভাবে নিশ্চিত করব?','বন্যার সময় কোন খাবার নিরাপদ?','যাচাইকৃত আশ্রয়কেন্দ্রের তথ্য কোথায় পাব?'];
+function add(t,c){var d=document.createElement('div');d.className='m '+c;d.textContent=t;$('chat').appendChild(d);$('chat').scrollTop=1e5}
+function ask(t){t=t.trim();if(!t)return;add(t,'u');var r=null;K.forEach(function(k){if(!r&&k[0].some(function(w){return t.indexOf(w)>-1}))r=k[1]});add(r||'এই প্রশ্নের জন্য যাচাইকৃত উত্তর আমার কাছে নেই। সরকারি নির্দেশনা ও জরুরি সেবার সাথে যোগাযোগ করুন। নিচের বিষয়গুলোয় প্রশ্ন করতে পারেন: পানি ঢুকছে, পানীয় জল, খাবার, আশ্রয়কেন্দ্র, বিদ্যুৎ, স্বাস্থ্য।','b');$('q').value=''}
+Q.forEach(function(t){var b=document.createElement('button');b.textContent=t;b.onclick=function(){ask(t)};$('chips').appendChild(b)});
+$('ask').onclick=function(){ask($('q').value)};$('q').onkeydown=function(e){if(e.key==='Enter')ask($('q').value)};
+})();
+</script>
+</body>
+</html>
