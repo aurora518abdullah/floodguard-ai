@@ -92,6 +92,7 @@ $("getWeather").onclick=async function(){
  const [lat,lon]=$("weatherArea").value.split(",");
  btn.disabled=true;status.textContent="বর্তমান আবহাওয়া ও আগামী ৩ দিনের বৃষ্টির পূর্বাভাস আনা হচ্ছে…";forecast.replaceChildren();source.textContent="";
  try{
+  
   const url=new URL("https://api.open-meteo.com/v1/forecast");
   url.search=new URLSearchParams({latitude:lat,longitude:lon,current:"temperature_2m,precipitation,rain,showers",daily:"precipitation_sum",forecast_days:"3",timezone:"Asia/Dhaka"}).toString();
   const response=await fetch(url.toString(),{headers:{Accept:"application/json"},cache:"no-store"});
